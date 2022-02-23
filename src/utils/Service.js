@@ -1,12 +1,16 @@
-import React from "react";
 import axios from "axios";
 
-const Service = (method, url, body = {}, params = {}) => {
+const Service = (method, url, body = {}, params = {}, token = null) => {
   return new Promise((resolve, reject) => {
     const header = {
       "Content-Type": "application/json",
     };
-    let config = {
+    if (token) {
+      console.log("token: ", token);
+      const AUTH_TOKEN = `Bearer ${token}`;
+      header.Authorization = AUTH_TOKEN;
+    }
+    const config = {
       method: method,
       url: url,
       headers: header,

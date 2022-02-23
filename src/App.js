@@ -9,7 +9,10 @@ function App() {
   return (
     <>
       <AppContextProvider>
-        <h1>Quiz</h1>
+        <div className="content">
+          <h1>Quiz</h1>
+        </div>
+
         <Router>
           <Routing />
         </Router>

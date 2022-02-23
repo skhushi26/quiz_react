@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../styles/login.css";
 import Service from "../utils/Service";
@@ -8,6 +9,7 @@ import { AppContext } from "../contexts/appContext";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { dispatch } = useContext(AppContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +33,12 @@ const Login = () => {
 
       if (status === 200) {
         showSuccess(message);
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          userData: res.data,
+          token: res.data.authToken,
+        });
+        // navigate("/list-category");
       } else if (status === 400) {
         showInfo(message);
       } else {
@@ -38,12 +46,6 @@ const Login = () => {
       }
 
       console.log(res);
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        userData: res.data,
-        token: res.data.authToken,
-      });
-
       //   event.stopPropagation();
     }
 
