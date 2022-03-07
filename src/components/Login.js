@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/login.scss";
+import "../styles/registration.scss";
 import Service from "../utils/Service";
 import { AppContext } from "../contexts/appContext";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
@@ -53,18 +54,19 @@ const Login = () => {
 
   return (
     <>
+      {/* <span className="header-text">Login</span> */}
       <div
         style={{ display: "flex", justifyContent: "center" }}
         className="mt-5"
       >
-        <Card border="primary" style={{ width: "40rem" }}>
+        <Card style={{ width: "40rem" }} className="main-body">
           <Card.Header className="header-text">LogIn</Card.Header>
           <Card.Body>
             <Card.Text>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label className="field-label">Email</Form.Label>
                   </Form.Group>
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
@@ -83,7 +85,7 @@ const Login = () => {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label className="field-label">Password</Form.Label>
                   </Form.Group>
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
