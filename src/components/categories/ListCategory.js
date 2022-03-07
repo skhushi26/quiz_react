@@ -2,7 +2,7 @@ import react, { useContext, useEffect, useState } from "react";
 import { Row, Col, Button, Form, Card } from "react-bootstrap";
 import { AppContext } from "../../contexts/appContext";
 import Service from "../../utils/Service";
-import "../../styles/addCategory.css";
+import "../../styles/addCategory.scss";
 import {
   showSuccess,
   showInfo,
@@ -206,41 +206,41 @@ const ListCategory = () => {
         {categoryData.map((category) => {
           return (
             <Col variant="primary" md={3}>
-              {/* <Link to={"/questions/" + category._id}> */}
-              <Card style={{ width: "18rem" }}>
-                <Card.Body>
-                  <Card.Title>{category.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {category.status}
-                  </Card.Subtitle>
-                  <Card.Text>{category.description}</Card.Text>
-                </Card.Body>
-                <Card.Body>
-                  {category.status === "draft" && (
-                    <>
-                      <Button
-                        onClick={() => openAddCategoryModal(category._id)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="success"
-                        onClick={() => submitQuizCategory(category._id)}
-                      >
-                        Submit
-                      </Button>
-                    </>
-                  )}
+              <Link to={"/questions/" + category._id}>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Body>
+                    <Card.Title>{category.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {category.status}
+                    </Card.Subtitle>
+                    <Card.Text>{category.description}</Card.Text>
+                  </Card.Body>
+                  <Card.Body>
+                    {category.status === "draft" && (
+                      <>
+                        <Button
+                          onClick={() => openAddCategoryModal(category._id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="success"
+                          onClick={() => submitQuizCategory(category._id)}
+                        >
+                          Submit
+                        </Button>
+                      </>
+                    )}
 
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDelete(category._id)}
-                  >
-                    Delete
-                  </Button>
-                </Card.Body>
-              </Card>
-              {/* </Link> */}
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(category._id)}
+                    >
+                      Delete
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Link>
             </Col>
           );
         })}

@@ -3,7 +3,7 @@ import { Form, Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import "../styles/login.css";
+import "../styles/login.scss";
 import Service from "../utils/Service";
 import { AppContext } from "../contexts/appContext";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
@@ -45,7 +45,6 @@ const Login = () => {
         showError(message);
       }
 
-      console.log(res);
       //   event.stopPropagation();
     }
 

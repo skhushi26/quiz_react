@@ -1,0 +1,27 @@
+.score-heading {
+  color: #76024b;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  font-family: ui-sans-serif;
+  margin-top: 10px;
+}
+
+.score-div {
+  border: 2px solid #76024b;
+  border-radius: 10px;
+}
+
+.score {
+  font-size: 25px;
+  color: #f3063663;
+  font-weight: bold;
+  font-family: cursive;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  background-color: #76024b !important;
+  margin: 5px;
+}
