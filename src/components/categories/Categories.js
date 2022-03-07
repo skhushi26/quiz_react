@@ -26,19 +26,30 @@ const Categories = () => {
 
   return (
     <Container>
-      <h3 className="mb-3">Quiz Categories</h3>
+      <h3 className="mb-4 quiz-category-header">Quiz Categories</h3>
       <Row>
         {categories.map((category) => {
           return (
-            <Col md={4}>
-              <Card style={{ width: "18rem" }} className="mb-3">
+            <Col md={4} className="card-main">
+              <Card style={{ width: "18rem" }} className="mb-3 category">
                 <Card.Body>
                   <Card.Title>{category.name}</Card.Title>
                   <Card.Text>{category.description}</Card.Text>
                   <Card.Text>
-                    <Link to={"/question/" + category._id}>
-                      <Button variant="success">Start</Button>
-                    </Link>
+                    {category.is_quiz_given ? (
+                      <Link to={"/question/" + category._id}>
+                        <Button
+                          className="score-preview-button"
+                          title="Click here to preview your quiz"
+                        >
+                          {`Total Score: ${category.total_score}`}
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link to={"/question/" + category._id}>
+                        <Button className="start-button">Start</Button>
+                      </Link>
+                    )}
                   </Card.Text>
                 </Card.Body>
               </Card>

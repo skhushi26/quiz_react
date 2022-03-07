@@ -7,3 +7,28 @@
   display: flex;
   justify-content: center;
 } */
+
+.card-main {
+  .category {
+    background-color: #76024b05 !important;
+  }
+
+  .category:hover {
+    border: 3px solid #76024b47;
+  }
+
+  .score-preview-button {
+    background-color: #76024b66 !important;
+    border: 1px solid #76024b47 !important;
+    font-size: 15px;
+  }
+
+  .start-button {
+    background-color: #73155fbd !important;
+    border: 1px solid #73155fbd !important;
+  }
+}
+
+.quiz-category-header {
+  color: #76024b;
+}
