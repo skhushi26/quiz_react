@@ -7,26 +7,21 @@ import ListQuestions from "../components/questions/ListQuestions";
 import Questions from "../components/questions/Questions";
 import Registration from "../components/Registration";
 import { AppContext } from "../contexts/appContext";
+import PrivateRoutes from "./PrivateRoutes";
 
 const Routing = () => {
-  const { userDetail, userRole } = useContext(AppContext);
-  const question = [
-    {
-      question_name: "",
-      options: [{ title: "", is_correct: false }],
-      category_id: "",
-    },
-  ];
-  console.log(userRole);
+  // const { userDetail, userRole, isAuth } = useContext(AppContext);
   return (
     <Routes>
       <Route exact path="/" element={<Registration />} />
       <Route path="/signup" element={<Registration />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/list-category" element={<ListCategory />} />
-      <Route path="/questions/:categoryId" element={<ListQuestions />} />
-      <Route path="/categories" element={<Categories />} />
-      <Route path="/question/:id" element={<Questions />} />
+      <Route exact path="/" element={<PrivateRoutes />}>
+        <Route path="/list-category" element={<ListCategory />} />
+        <Route path="/questions/:categoryId" element={<ListQuestions />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/question/:id" element={<Questions />} />
+      </Route>
     </Routes>
   );
 };

@@ -11,6 +11,7 @@
 .card-main {
   .category {
     background-color: #76024b05 !important;
+    text-decoration: none !important;
   }
 
   .category:hover {
@@ -27,8 +28,27 @@
     background-color: #73155fbd !important;
     border: 1px solid #73155fbd !important;
   }
+
+  .text-card {
+    color: #76024b !important;
+  }
+
+  .button-action {
+    margin-right: 15px;
+  }
+}
+
+.add-new-category-main {
+  height: 5rem;
+  width: 10rem;
+  background-color: #76024b66 !important;
 }
 
 .quiz-category-header {
   color: #76024b;
+}
+
+.add-category-plus {
+  height: 4rem;
+  width: 8rem;
 }

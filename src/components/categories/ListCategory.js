@@ -11,6 +11,7 @@ import {
 } from "../../utils/AlertService";
 import ModalService from "../commons/CustomModal";
 import { Link } from "react-router-dom";
+import { FaEdit, FaTrash, FaPaperPlane, FaPlusCircle } from "react-icons/fa";
 
 function CategoryCrud(props) {
   const { userDetail } = useContext(AppContext);
@@ -205,10 +206,10 @@ const ListCategory = () => {
       <Row>
         {categoryData.map((category) => {
           return (
-            <Col variant="primary" md={3}>
+            <Col variant="primary" md={3} className="card-main">
               <Link to={"/questions/" + category._id}>
-                <Card style={{ width: "18rem" }}>
-                  <Card.Body>
+                <Card style={{ width: "18rem" }} className="mb-3 category">
+                  <Card.Body className="text-card">
                     <Card.Title>{category.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
                       {category.status}
@@ -219,15 +220,17 @@ const ListCategory = () => {
                     {category.status === "draft" && (
                       <>
                         <Button
+                          className="button-action"
                           onClick={() => openAddCategoryModal(category._id)}
                         >
-                          Edit
+                          <FaEdit />
                         </Button>
                         <Button
                           variant="success"
+                          className="button-action"
                           onClick={() => submitQuizCategory(category._id)}
                         >
-                          Submit
+                          <FaPaperPlane />
                         </Button>
                       </>
                     )}
@@ -236,7 +239,7 @@ const ListCategory = () => {
                       variant="danger"
                       onClick={() => handleDelete(category._id)}
                     >
-                      Delete
+                      <FaTrash />
                     </Button>
                   </Card.Body>
                 </Card>
@@ -244,9 +247,13 @@ const ListCategory = () => {
             </Col>
           );
         })}
-        <Col className="mt-4">
-          <Button variant="secondary" onClick={() => openAddCategoryModal()}>
-            +
+        <Col className="mt-4 ">
+          <Button
+            variant="secondary"
+            onClick={() => openAddCategoryModal()}
+            className="add-new-category-main"
+          >
+            <FaPlusCircle className="add-category-plus" />
           </Button>
         </Col>
       </Row>

@@ -310,7 +310,7 @@ const ListQuestions = (props) => {
                   </Button>
                 </Col>
               </Row>
-              <Row className="d-flex justify-content-center">
+              <Row className="d-flex justify-content-center mt-5">
                 {!isSubmitted && (
                   <>
                     <Col md={4}>

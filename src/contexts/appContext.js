@@ -9,6 +9,7 @@ const INITIAL_DATA = {
   token: "",
   userData: null,
   userRole: null,
+  isAuth: false,
 };
 
 const AppContextProvider = (props) => {
@@ -25,8 +26,9 @@ const AppContextProvider = (props) => {
     <AppContext.Provider
       value={{
         userDetail,
-        token: userDetail.authToken,
-        userRole: userDetail.role,
+        token: userDetail.token,
+        userRole: userDetail.userRole,
+        isAuth: userDetail.isAuth,
         dispatch,
       }}
     >
