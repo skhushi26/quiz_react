@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AppContext } from "../../contexts/appContext";
 import { Card, Form, Row, Col, Button, Container } from "react-bootstrap";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 import Service from "../../utils/Service";
 import {
@@ -20,7 +21,7 @@ const ListQuestions = (props) => {
 
   const que = {
     question_name: "",
-    options: [{ title: "", is_correct: false }],
+    options: [{ title: "", is_correct: true }],
     category_id: "",
   };
 
@@ -66,7 +67,7 @@ const ListQuestions = (props) => {
     let newOption;
     que.options.forEach((option) => {
       newOption = {
-        ...JSON.parse(JSON.stringify(option)),
+        ...JSON.parse(JSON.stringify({ ...option, is_correct: false })),
       };
       if (questionsData[0].questions[i].options.length < 4) {
         questionsData[0].questions[i].options = [
@@ -80,7 +81,11 @@ const ListQuestions = (props) => {
   };
 
   const removeOptions = (queIdx, ansIdx) => {
+    if (questionsData[0].questions[queIdx].options[ansIdx].is_correct) {
+      questionsData[0].questions[queIdx].options[0].is_correct = true;
+    }
     questionsData[0].questions[queIdx].options.splice(ansIdx, 1);
+
     setQuestionsData([...questionsData]);
   };
 
@@ -105,7 +110,7 @@ const ListQuestions = (props) => {
     setQuestionsData([...questionsData]);
   };
 
-  const handleSubmit = async (isSubmitted) => {
+  const handleSubmit = async (isSubmitted, queIdx, ansIdx) => {
     // event.preventDefault();
     // const form = event.currentTarget;
     // if (form.checkValidity()) {
@@ -145,6 +150,7 @@ const ListQuestions = (props) => {
       {},
       userDetail.token
     );
+    console.log("res.data in list questionsssss", res.data[0]);
     if (res.data) {
       // setIsSubmitted(false);
 
@@ -193,6 +199,7 @@ const ListQuestions = (props) => {
                               // className="field-text-box"
                               required
                               type="text"
+                              className="list-question-text-box"
                               value={que.question_name}
                               onChange={(e) =>
                                 handleQuestionTitle(queIdx, e.target.value)
@@ -212,14 +219,13 @@ const ListQuestions = (props) => {
                             md="2"
                             controlId="validationCustom01"
                           >
-                            <Button
-                              variant="danger"
+                            <FaTrash
+                              title="Delete"
+                              className="delete-btn"
                               onClick={() =>
                                 handleDeleteQuestion(queIdx, que._id)
                               }
-                            >
-                              Delete
-                            </Button>
+                            />
                           </Form.Group>
                         </Row>
                         {/* <Row className="mb-3"> */}
@@ -237,7 +243,7 @@ const ListQuestions = (props) => {
                                 <Form.Control
                                   required
                                   type="text"
-                                  className="w-100"
+                                  className="w-100 list-question-text-box"
                                   value={option.title}
                                   onChange={(e) =>
                                     handleOptionTitle(
@@ -260,8 +266,9 @@ const ListQuestions = (props) => {
                                 className="d-flex align-items-center"
                               >
                                 <Form.Check
+                                  className="correct-radio-button"
                                   type="radio"
-                                  label="True"
+                                  label="Correct"
                                   name="true"
                                   checked={option.is_correct || false}
                                   onChange={(e) =>
@@ -276,15 +283,15 @@ const ListQuestions = (props) => {
                               </Form.Group>
                               {ansIdx != 0 && (
                                 <Col md={2}>
-                                  <Button
-                                    variant="danger"
-                                    disabled={isSubmitted}
-                                    onClick={() =>
-                                      removeOptions(queIdx, ansIdx)
-                                    }
-                                  >
-                                    Remove
-                                  </Button>
+                                  {!isSubmitted && (
+                                    <FaTrash
+                                      title="Remove"
+                                      className="delete-btn"
+                                      onClick={() =>
+                                        removeOptions(queIdx, ansIdx)
+                                      }
+                                    />
+                                  )}
                                 </Col>
                               )}
                             </Row>
@@ -294,6 +301,7 @@ const ListQuestions = (props) => {
                           <Row className="mt-2">
                             <Col md={3}>
                               <Button
+                                className="add-que-option-btn"
                                 disabled={isSubmitted}
                                 onClick={() => addNewOption(queIdx)}
                               >
@@ -309,7 +317,11 @@ const ListQuestions = (props) => {
               </Row>
               <Row className="mt-3">
                 <Col md={3}>
-                  <Button disabled={isSubmitted} onClick={addNewQue}>
+                  <Button
+                    disabled={isSubmitted}
+                    onClick={addNewQue}
+                    className="add-que-option-btn"
+                  >
                     Add another question!
                   </Button>
                 </Col>

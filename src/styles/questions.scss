@@ -82,6 +82,24 @@
   border-radius: 5px;
 }
 
+.list-question-text-box {
+  background-color: #76024b05 !important;
+  border: 2px solid #76024b47 !important;
+}
+
+.add-que-option-btn {
+  background-color: rgb(118, 2, 75) !important;
+  border: rgb(118, 2, 75) !important;
+}
+
+.delete-btn {
+  color: red;
+}
+
+.form-check-input:checked {
+  background-color: rgb(118, 2, 75) !important ;
+  border: rgb(118, 2, 75) !important;
+}
 // body {
 //   background-color: #67d8cb;
 // }

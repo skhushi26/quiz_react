@@ -235,15 +235,15 @@ const ListCategory = () => {
                       >
                         <FaPaperPlane />
                       </Button>
-                      <Button
-                        variant="danger"
-                        title="Delete"
-                        onClick={() => handleDelete(category._id)}
-                      >
-                        <FaTrash />
-                      </Button>
                     </>
                   )}
+                  <Button
+                    variant="danger"
+                    title="Delete"
+                    onClick={() => handleDelete(category._id)}
+                  >
+                    <FaTrash />
+                  </Button>
                 </Card.Footer>
               </Card>
             </Col>
