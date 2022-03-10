@@ -1,6 +1,8 @@
 import axios from "axios";
+import { showInfo } from "./AlertService";
 
 const Service = (method, url, body = {}, params = {}, token = null) => {
+  // const navigate = useNavigate();
   return new Promise((resolve, reject) => {
     const header = {
       "Content-Type": "application/json",
@@ -37,7 +39,12 @@ const Service = (method, url, body = {}, params = {}, token = null) => {
         const newResponseText = JSON.parse(responseText);
         if (status === 401) {
           // will logout
-          resolve({
+          showInfo(
+            "Session is expire please do logout and login again!",
+            "warning",
+            "warning"
+          );
+          reject({
             error: true,
             data: newResponseText.data,
             message: newResponseText.message,

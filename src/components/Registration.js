@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Row, Col, Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -6,8 +6,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../styles/registration.scss";
 import Service from "../utils/Service";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
+import { AppContext } from "../contexts/appContext";
 
 function Registration() {
+  const { isAuth, userRole } = useContext(AppContext);
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,6 +17,16 @@ function Registration() {
   const [password, setPassword] = useState("");
   const [mobileNo, setMobileNo] = useState(0);
   const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    if (isAuth) {
+      if (userRole === "admin") {
+        navigate("/list-category");
+      } else {
+        navigate("/categories");
+      }
+    }
+  }, [isAuth]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

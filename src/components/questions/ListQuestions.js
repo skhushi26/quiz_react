@@ -175,9 +175,10 @@ const ListQuestions = (props) => {
                   return (
                     <>
                       <Form
-                      // noValidate
-                      // validated={validated}
-                      // onSubmit={handleSubmit}
+                        className="list-question-part mb-3"
+                        // noValidate
+                        // validated={validated}
+                        // onSubmit={handleSubmit}
                       >
                         <Row className="mb-3">
                           <Form.Group controlId="validationCustom01">
@@ -277,6 +278,7 @@ const ListQuestions = (props) => {
                                 <Col md={2}>
                                   <Button
                                     variant="danger"
+                                    disabled={isSubmitted}
                                     onClick={() =>
                                       removeOptions(queIdx, ansIdx)
                                     }
@@ -288,16 +290,18 @@ const ListQuestions = (props) => {
                             </Row>
                           );
                         })}
-                        <Row className="mt-2">
-                          <Col md={3}>
-                            <Button
-                              disabled={isSubmitted}
-                              onClick={() => addNewOption(queIdx)}
-                            >
-                              Add new option
-                            </Button>
-                          </Col>
-                        </Row>
+                        {!isSubmitted && (
+                          <Row className="mt-2">
+                            <Col md={3}>
+                              <Button
+                                disabled={isSubmitted}
+                                onClick={() => addNewOption(queIdx)}
+                              >
+                                Add new option
+                              </Button>
+                            </Col>
+                          </Row>
+                        )}
                       </Form>
                     </>
                   );

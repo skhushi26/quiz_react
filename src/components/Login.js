@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -11,10 +11,21 @@ import { showSuccess, showInfo, showError } from "../utils/AlertService";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, isAuth, userRole } = useContext(AppContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    if (isAuth) {
+      if (userRole === "admin") {
+        navigate("/list-category");
+      } else {
+        navigate("/categories");
+      }
+    }
+  }, [isAuth]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,13 +44,19 @@ const Login = () => {
       const { message, status } = res;
 
       if (status === 200) {
+        console.log("res in login", res);
         showSuccess(message);
         dispatch({
           type: "LOGIN_SUCCESS",
           userData: res.data,
           token: res.data.authToken,
+          userRole: res.data.role,
         });
-        // navigate("/list-category");
+        if (userRole === "admin") {
+          navigate("/list-category");
+        } else {
+          navigate("/categories");
+        }
       } else if (status === 400) {
         showInfo(message);
       } else {

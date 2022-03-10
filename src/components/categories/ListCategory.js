@@ -1,5 +1,5 @@
 import react, { useContext, useEffect, useState } from "react";
-import { Row, Col, Button, Form, Card } from "react-bootstrap";
+import { Row, Col, Button, Form, Card, Container } from "react-bootstrap";
 import { AppContext } from "../../contexts/appContext";
 import Service from "../../utils/Service";
 import "../../styles/addCategory.scss";
@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaPaperPlane, FaPlusCircle } from "react-icons/fa";
 
 function CategoryCrud(props) {
-  const { userDetail } = useContext(AppContext);
+  const { userDetail, isAuth } = useContext(AppContext);
   const [validated, setValidated] = useState(false);
   const [categoryName, setCategoryName] = useState(
     props.categoryDetail?.data?.name ? props.categoryDetail?.data?.name : ""
@@ -207,8 +207,8 @@ const ListCategory = () => {
         {categoryData.map((category) => {
           return (
             <Col variant="primary" md={3} className="card-main">
-              <Link to={"/questions/" + category._id}>
-                <Card style={{ width: "18rem" }} className="mb-3 category">
+              <Card style={{ width: "18rem" }} className="mb-3 category">
+                <Link to={"/questions/" + category._id}>
                   <Card.Body className="text-card">
                     <Card.Title>{category.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
@@ -216,34 +216,36 @@ const ListCategory = () => {
                     </Card.Subtitle>
                     <Card.Text>{category.description}</Card.Text>
                   </Card.Body>
-                  <Card.Body>
-                    {category.status === "draft" && (
-                      <>
-                        <Button
-                          className="button-action"
-                          onClick={() => openAddCategoryModal(category._id)}
-                        >
-                          <FaEdit />
-                        </Button>
-                        <Button
-                          variant="success"
-                          className="button-action"
-                          onClick={() => submitQuizCategory(category._id)}
-                        >
-                          <FaPaperPlane />
-                        </Button>
-                      </>
-                    )}
-
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(category._id)}
-                    >
-                      <FaTrash />
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Link>
+                </Link>
+                <Card.Footer>
+                  {category.status === "draft" && (
+                    <>
+                      <Button
+                        className="button-action"
+                        title="Edit"
+                        onClick={() => openAddCategoryModal(category._id)}
+                      >
+                        <FaEdit />
+                      </Button>
+                      <Button
+                        variant="success"
+                        title="Submit"
+                        className="button-action"
+                        onClick={() => submitQuizCategory(category._id)}
+                      >
+                        <FaPaperPlane />
+                      </Button>
+                      <Button
+                        variant="danger"
+                        title="Delete"
+                        onClick={() => handleDelete(category._id)}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </>
+                  )}
+                </Card.Footer>
+              </Card>
             </Col>
           );
         })}
