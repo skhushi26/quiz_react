@@ -13,9 +13,9 @@ import {
 } from "../../utils/AlertService";
 
 const ListQuestions = (props) => {
-  const { userDetail } = useContext(AppContext);
+  const { userDetail, showLoader } = useContext(AppContext);
   const { categoryId } = useParams();
-  const [questionsData, setQuestionsData] = useState([]);
+  const [questionsData, setQuestionsData] = useState(null);
   const [validated, setValidated] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -39,8 +39,8 @@ const ListQuestions = (props) => {
 
         if (status === 200) {
           showSuccess(message);
-          questionsData[0].questions.splice(queIdx, 1);
-          setQuestionsData([...questionsData]);
+          questionsData.questions.splice(queIdx, 1);
+          setQuestionsData({ ...questionsData });
         } else if (status === 400) {
           showInfo(message);
         } else {
@@ -48,8 +48,8 @@ const ListQuestions = (props) => {
         }
       }
     } else {
-      questionsData[0].questions.splice(queIdx, 1);
-      setQuestionsData([...questionsData]);
+      questionsData.questions.splice(queIdx, 1);
+      setQuestionsData({ ...questionsData });
     }
   };
 
@@ -59,8 +59,8 @@ const ListQuestions = (props) => {
       category_id: categoryId,
     };
 
-    questionsData[0].questions = [...questionsData[0].questions, newQue];
-    setQuestionsData([...questionsData]);
+    questionsData.questions = [...questionsData.questions, newQue];
+    setQuestionsData({ ...questionsData });
   };
 
   const addNewOption = (i) => {
@@ -69,53 +69,50 @@ const ListQuestions = (props) => {
       newOption = {
         ...JSON.parse(JSON.stringify({ ...option, is_correct: false })),
       };
-      if (questionsData[0].questions[i].options.length < 4) {
-        questionsData[0].questions[i].options = [
-          ...questionsData[0].questions[i].options,
+      if (questionsData.questions[i].options.length < 4) {
+        questionsData.questions[i].options = [
+          ...questionsData.questions[i].options,
           newOption,
         ];
-        // setAddOptionDisable(true);
       }
     });
-    setQuestionsData([...questionsData]);
+    setQuestionsData({ ...questionsData });
   };
 
   const removeOptions = (queIdx, ansIdx) => {
-    if (questionsData[0].questions[queIdx].options[ansIdx].is_correct) {
-      questionsData[0].questions[queIdx].options[0].is_correct = true;
+    if (questionsData.questions[queIdx].options[ansIdx].is_correct) {
+      questionsData.questions[queIdx].options[0].is_correct = true;
     }
-    questionsData[0].questions[queIdx].options.splice(ansIdx, 1);
+    questionsData.questions[queIdx].options.splice(ansIdx, 1);
 
-    setQuestionsData([...questionsData]);
+    setQuestionsData({ ...questionsData });
   };
 
   const handleQuestionTitle = (queIdx, quesTitle) => {
-    questionsData[0].questions[queIdx].question_name = quesTitle;
-    setQuestionsData([...questionsData]);
+    questionsData.questions[queIdx].question_name = quesTitle;
+    setQuestionsData({ ...questionsData });
   };
 
   const handleIsCorrect = (queIdx, ansIdx, isCorrect) => {
-    questionsData[0].questions[queIdx].options.map((ans, idx) => {
+    questionsData.questions[queIdx].options.map((ans, idx) => {
       if (idx === ansIdx) {
         ans.is_correct = isCorrect;
       } else {
         ans.is_correct = false;
       }
     });
-    setQuestionsData([...questionsData]);
+    setQuestionsData({ ...questionsData });
   };
 
   const handleOptionTitle = (queIdx, ansIdx, ansTitle) => {
-    questionsData[0].questions[queIdx].options[ansIdx].title = ansTitle;
-    setQuestionsData([...questionsData]);
+    questionsData.questions[queIdx].options[ansIdx].title = ansTitle;
+    setQuestionsData({ ...questionsData });
   };
 
-  const handleSubmit = async (isSubmitted, queIdx, ansIdx) => {
-    // event.preventDefault();
-    // const form = event.currentTarget;
-    // if (form.checkValidity()) {
+  const handleSubmit = async (isSubmitted) => {
+    showLoader(true);
     const reqBody = {
-      questions: questionsData[0].questions,
+      questions: questionsData.questions,
       is_submitted: isSubmitted,
     };
     const res = await Service(
@@ -130,16 +127,13 @@ const ListQuestions = (props) => {
 
     if (status === 200) {
       showSuccess(message);
+      showLoader(false);
       getQuestionsList();
     } else if (status === 400) {
       showInfo(message);
     } else {
       showError(message);
     }
-    // event.stopPropagation();
-    // }
-
-    // setValidated(true);
   };
 
   const getQuestionsList = async () => {
@@ -150,215 +144,163 @@ const ListQuestions = (props) => {
       {},
       userDetail.token
     );
-    console.log("res.data in list questionsssss", res.data[0]);
     if (res.data) {
-      // setIsSubmitted(false);
-
       const isSubmittedFlag = res.data[0].questions.find(
         (que) => que.status === "submitted"
       );
       setIsSubmitted(isSubmittedFlag);
-      setQuestionsData(res.data);
+      setQuestionsData(res.data[0]);
     }
   };
 
   useEffect(() => {
     getQuestionsList();
-  }, []);
+  }, [categoryId]);
+
+  if (!questionsData) return <span>Loading...</span>;
 
   return (
-    <>
-      <div>
-        {questionsData.map((quiz) => {
+    <Container>
+      <h3>{questionsData.name}</h3>
+      <p>{questionsData.description}</p>
+
+      <hr />
+      <Row>
+        {questionsData.questions.map((que, queIdx) => {
           return (
-            <Container>
-              <h3>{quiz.name}</h3>
-              <p>{quiz.description}</p>
-
-              <hr />
-              <Row>
-                {quiz.questions.map((que, queIdx) => {
-                  return (
-                    <>
-                      <Form
-                        className="list-question-part mb-3"
-                        // noValidate
-                        // validated={validated}
-                        // onSubmit={handleSubmit}
-                      >
-                        <Row className="mb-3">
-                          <Form.Group controlId="validationCustom01">
-                            <Form.Label>Question:</Form.Label>
-                          </Form.Group>
-                          <Form.Group
-                            as={Col}
-                            md="10"
-                            controlId="validationCustom01"
-                          >
-                            <Form.Control
-                              // className="field-text-box"
-                              required
-                              type="text"
-                              className="list-question-text-box"
-                              value={que.question_name}
-                              onChange={(e) =>
-                                handleQuestionTitle(queIdx, e.target.value)
-                              }
-                              placeholder="Question name"
-                              disabled={isSubmitted}
-                            />
-                            <Form.Control.Feedback>
-                              Looks good!
-                            </Form.Control.Feedback>
-                            <Form.Control.Feedback type="invalid">
-                              Please provide question name.
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group
-                            as={Col}
-                            md="2"
-                            controlId="validationCustom01"
-                          >
-                            <FaTrash
-                              title="Delete"
-                              className="delete-btn"
-                              onClick={() =>
-                                handleDeleteQuestion(queIdx, que._id)
-                              }
-                            />
-                          </Form.Group>
-                        </Row>
-                        {/* <Row className="mb-3"> */}
-                        <Form.Group controlId="validationCustom01">
-                          <Form.Label>Options:</Form.Label>
-                        </Form.Group>
-                        {que.options.map((option, ansIdx) => {
-                          return (
-                            <Row className="mb-1">
-                              <Form.Group
-                                as={Col}
-                                md="8"
-                                controlId="validationCustom01"
-                              >
-                                <Form.Control
-                                  required
-                                  type="text"
-                                  className="w-100 list-question-text-box"
-                                  value={option.title}
-                                  onChange={(e) =>
-                                    handleOptionTitle(
-                                      queIdx,
-                                      ansIdx,
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Option title"
-                                  disabled={isSubmitted}
-                                />
-                                <Form.Control.Feedback>
-                                  Looks good!
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                              <Form.Group
-                                as={Col}
-                                md="2"
-                                controlId="validationCustom02"
-                                className="d-flex align-items-center"
-                              >
-                                <Form.Check
-                                  className="correct-radio-button"
-                                  type="radio"
-                                  label="Correct"
-                                  name="true"
-                                  checked={option.is_correct || false}
-                                  onChange={(e) =>
-                                    handleIsCorrect(
-                                      queIdx,
-                                      ansIdx,
-                                      e.target.checked
-                                    )
-                                  }
-                                  disabled={isSubmitted}
-                                />
-                              </Form.Group>
-                              {ansIdx != 0 && (
-                                <Col md={2}>
-                                  {!isSubmitted && (
-                                    <FaTrash
-                                      title="Remove"
-                                      className="delete-btn"
-                                      onClick={() =>
-                                        removeOptions(queIdx, ansIdx)
-                                      }
-                                    />
-                                  )}
-                                </Col>
-                              )}
-                            </Row>
-                          );
-                        })}
-                        {!isSubmitted && (
-                          <Row className="mt-2">
-                            <Col md={3}>
-                              <Button
-                                className="add-que-option-btn"
-                                disabled={isSubmitted}
-                                onClick={() => addNewOption(queIdx)}
-                              >
-                                Add new option
-                              </Button>
-                            </Col>
-                          </Row>
-                        )}
-                      </Form>
-                    </>
-                  );
-                })}
-              </Row>
-              <Row className="mt-3">
-                <Col md={3}>
-                  <Button
+            <Form className="list-question-part mb-3">
+              <Row className="mb-3">
+                <Form.Group controlId="validationCustom01">
+                  <Form.Label>Question:</Form.Label>
+                </Form.Group>
+                <Form.Group as={Col} md="10" controlId="validationCustom01">
+                  <Form.Control
+                    required
+                    type="text"
+                    className="list-question-text-box"
+                    value={que.question_name}
+                    onChange={(e) =>
+                      handleQuestionTitle(queIdx, e.target.value)
+                    }
+                    placeholder="Question name"
                     disabled={isSubmitted}
-                    onClick={addNewQue}
-                    className="add-que-option-btn"
-                  >
-                    Add another question!
-                  </Button>
-                </Col>
+                  />
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">
+                    Please provide question name.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="2" controlId="validationCustom01">
+                  <FaTrash
+                    title="Delete"
+                    className="delete-btn"
+                    onClick={() => handleDeleteQuestion(queIdx, que._id)}
+                  />
+                </Form.Group>
               </Row>
-              <Row className="d-flex justify-content-center mt-5">
-                {!isSubmitted && (
-                  <>
-                    <Col md={4}>
-                      <Button
-                        variant="success"
-                        onClick={() => handleSubmit(true)}
-                      >
-                        Save and Submit
-                      </Button>
-                    </Col>
-                    <Col md={4}>
-                      <Button
-                        variant="info"
-                        onClick={() => handleSubmit(false)}
-                      >
-                        Save
-                      </Button>
-                    </Col>
-                  </>
-                )}
-
-                <Col md={4}>
-                  <Link to="/list-category">
-                    <Button variant="secondary">Cancel</Button>
-                  </Link>
-                </Col>
-              </Row>
-            </Container>
+              <Form.Group controlId="validationCustom01">
+                <Form.Label>Options:</Form.Label>
+              </Form.Group>
+              {que.options.map((option, ansIdx) => {
+                return (
+                  <Row className="mb-1">
+                    <Form.Group as={Col} md="8" controlId="validationCustom01">
+                      <Form.Control
+                        required
+                        type="text"
+                        className="w-100 list-question-text-box"
+                        value={option.title}
+                        onChange={(e) =>
+                          handleOptionTitle(queIdx, ansIdx, e.target.value)
+                        }
+                        placeholder="Option title"
+                        disabled={isSubmitted}
+                      />
+                      <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group
+                      as={Col}
+                      md="2"
+                      controlId="validationCustom02"
+                      className="d-flex align-items-center"
+                    >
+                      <Form.Check
+                        className="correct-radio-button"
+                        type="radio"
+                        label="Correct"
+                        name="true"
+                        checked={option.is_correct || false}
+                        onChange={(e) =>
+                          handleIsCorrect(queIdx, ansIdx, e.target.checked)
+                        }
+                        disabled={isSubmitted}
+                      />
+                    </Form.Group>
+                    {ansIdx != 0 && (
+                      <Col md={2}>
+                        {!isSubmitted && (
+                          <FaTrash
+                            title="Remove"
+                            className="delete-btn"
+                            onClick={() => removeOptions(queIdx, ansIdx)}
+                          />
+                        )}
+                      </Col>
+                    )}
+                  </Row>
+                );
+              })}
+              {!isSubmitted && (
+                <Row className="mt-2">
+                  <Col md={3}>
+                    <Button
+                      className="add-que-option-btn"
+                      disabled={isSubmitted}
+                      onClick={() => addNewOption(queIdx)}
+                    >
+                      Add new option
+                    </Button>
+                  </Col>
+                </Row>
+              )}
+            </Form>
           );
         })}
-      </div>
-    </>
+      </Row>
+      <Row className="mt-3">
+        <Col md={3}>
+          <Button
+            disabled={isSubmitted}
+            onClick={addNewQue}
+            className="add-que-option-btn"
+          >
+            Add another question!
+          </Button>
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center mt-5">
+        {!isSubmitted && (
+          <>
+            <Col md={4}>
+              <Button variant="success" onClick={() => handleSubmit(true)}>
+                Save and Submit
+              </Button>
+            </Col>
+            <Col md={4}>
+              <Button variant="info" onClick={() => handleSubmit(false)}>
+                Save
+              </Button>
+            </Col>
+          </>
+        )}
+
+        <Col md={4}>
+          <Link to="/list-category">
+            <Button variant="secondary">Cancel</Button>
+          </Link>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

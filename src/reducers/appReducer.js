@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT } from "../actions/appActions";
+import { LOGIN_SUCCESS, LOGOUT, LOADER } from "../actions/appActions";
 
 export const appReducer = (state, action) => {
   console.log("state, action", state, action);
@@ -20,6 +20,9 @@ export const appReducer = (state, action) => {
         userRole: null,
         isAuth: false,
       };
+
+    case LOADER:
+      return { ...state, loader: action.loader };
 
     default:
       return state;

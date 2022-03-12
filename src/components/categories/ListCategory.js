@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaPaperPlane, FaPlusCircle } from "react-icons/fa";
 
 function CategoryCrud(props) {
-  const { userDetail, isAuth } = useContext(AppContext);
+  const { userDetail, isAuth, showLoader } = useContext(AppContext);
   const [validated, setValidated] = useState(false);
   const [categoryName, setCategoryName] = useState(
     props.categoryDetail?.data?.name ? props.categoryDetail?.data?.name : ""
@@ -30,6 +30,7 @@ function CategoryCrud(props) {
     const form = event.currentTarget;
     let res;
     if (form.checkValidity()) {
+      showLoader(true);
       const reqBody = {
         name: categoryName,
         description,
@@ -55,6 +56,7 @@ function CategoryCrud(props) {
       if (status === 200) {
         showSuccess(message);
         props.setShow(false);
+        showLoader(false);
       } else if (status === 400) {
         showInfo(message);
       } else {
@@ -115,7 +117,7 @@ function CategoryCrud(props) {
 }
 
 const ListCategory = () => {
-  const { userDetail } = useContext(AppContext);
+  const { userDetail, showLoader } = useContext(AppContext);
   const [categoryData, setCategoryData] = useState([]);
   const [show, setShow] = useState(false);
   const [categoryDetail, setCategoryDetail] = useState(null);
@@ -142,6 +144,7 @@ const ListCategory = () => {
   };
 
   const getCategoryList = async () => {
+    showLoader(true);
     const res = await Service(
       "GET",
       "http://localhost:5555/quiz-category/get-all",
@@ -150,6 +153,7 @@ const ListCategory = () => {
       userDetail.token
     );
     setCategoryData(res.data);
+    showLoader(false);
   };
 
   const handleDelete = async (id) => {

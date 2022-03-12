@@ -6,10 +6,11 @@ import { AppContext } from "../../contexts/appContext";
 import Service from "../../utils/Service";
 
 const Categories = () => {
-  const { userDetail } = useContext(AppContext);
+  const { userDetail, showLoader } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
 
   const getCategoryList = async () => {
+    showLoader(true);
     const res = await Service(
       "GET",
       "http://localhost:5555/quiz-category/get-submitted",
@@ -18,6 +19,7 @@ const Categories = () => {
       userDetail.token
     );
     setCategories(res.data);
+    showLoader(false);
   };
 
   useEffect(() => {
