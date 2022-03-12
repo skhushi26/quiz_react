@@ -15,7 +15,6 @@ function App() {
         <h1>Quiz</h1>
         <Logout />
       </div>
-
       <Router>
         <Routing />
       </Router>
