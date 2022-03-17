@@ -8,6 +8,7 @@ import "../styles/registration.scss";
 import Service from "../utils/Service";
 import { AppContext } from "../contexts/appContext";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
+import { APP_URL } from "../utils/Constants";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,11 +38,7 @@ const Login = () => {
         email: email,
         password: password,
       };
-      const res = await Service(
-        "POST",
-        "http://localhost:5555/user/login",
-        reqBody
-      );
+      const res = await Service("POST", `${APP_URL}user/login`, reqBody);
       const { message, status } = res;
 
       if (status === 200) {

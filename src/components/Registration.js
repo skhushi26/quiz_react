@@ -7,6 +7,7 @@ import "../styles/registration.scss";
 import Service from "../utils/Service";
 import { showSuccess, showInfo, showError } from "../utils/AlertService";
 import { AppContext } from "../contexts/appContext";
+import { APP_URL } from "../utils/Constants";
 
 function Registration() {
   const { isAuth, userRole, showLoader } = useContext(AppContext);
@@ -40,11 +41,7 @@ function Registration() {
         password: password,
         mobile_no: mobileNo,
       };
-      const res = await Service(
-        "POST",
-        "http://localhost:5555/user/registration",
-        reqBody
-      );
+      const res = await Service("POST", `${APP_URL}user/registration`, reqBody);
       const { message, status } = res;
 
       if (status === 200) {

@@ -6,6 +6,7 @@ import Service from "../../utils/Service";
 import "../../styles/questions.scss";
 import { showSuccess, showInfo, showError } from "../../utils/AlertService";
 import Score from "../Score";
+import { APP_URL } from "../../utils/Constants";
 
 const Questions = () => {
   const { userDetail, showLoader } = useContext(AppContext);
@@ -20,7 +21,7 @@ const Questions = () => {
   const getQuestionsList = async () => {
     const res = await Service(
       "GET",
-      `http://localhost:5555/quiz-category/get-question-by-category/${id}`,
+      `${APP_URL}quiz-category/get-question-by-category/${id}`,
       {},
       {},
       userDetail.token
@@ -29,7 +30,7 @@ const Questions = () => {
     if (res.data[0].is_quiz_given) {
       const quizResultRes = await Service(
         "GET",
-        `http://localhost:5555/quiz-result/get/${id}`,
+        `${APP_URL}quiz-result/get/${id}`,
         {},
         {},
         userDetail.token
@@ -73,7 +74,7 @@ const Questions = () => {
     };
     const res = await Service(
       "POST",
-      "http://localhost:5555/quiz-result/add",
+      `${APP_URL}quiz-result/add`,
       reqBody,
       {},
       userDetail.token

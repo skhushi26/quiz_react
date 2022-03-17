@@ -12,6 +12,7 @@ import {
 import ModalService from "../commons/CustomModal";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaPaperPlane, FaPlusCircle } from "react-icons/fa";
+import { APP_URL } from "../../utils/Constants";
 
 function CategoryCrud(props) {
   const { userDetail, isAuth, showLoader } = useContext(AppContext);
@@ -39,14 +40,14 @@ function CategoryCrud(props) {
       res = props.categoryDetail
         ? await Service(
             "PATCH",
-            `http://localhost:5555/quiz-category/update/${props.categoryDetail.data._id}`,
+            `${APP_URL}quiz-category/update/${props.categoryDetail.data._id}`,
             reqBody,
             {},
             userDetail.token
           )
         : await Service(
             "POST",
-            "http://localhost:5555/quiz-category/add",
+            `${APP_URL}quiz-category/add`,
             reqBody,
             {},
             userDetail.token
@@ -130,7 +131,7 @@ const ListCategory = () => {
     if (id) {
       const category = await Service(
         "GET",
-        `http://localhost:5555/quiz-category/get-one/${id}`,
+        `${APP_URL}quiz-category/get-one/${id}`,
         {},
         {},
         userDetail.token
@@ -147,7 +148,7 @@ const ListCategory = () => {
     showLoader(true);
     const res = await Service(
       "GET",
-      "http://localhost:5555/quiz-category/get-all",
+      `${APP_URL}quiz-category/get-all`,
       {},
       {},
       userDetail.token
@@ -163,7 +164,7 @@ const ListCategory = () => {
       showLoader(true);
       const res = await Service(
         "PATCH",
-        `http://localhost:5555/quiz-category/delete/${id}`,
+        `${APP_URL}quiz-category/delete/${id}`,
         {},
         {},
         userDetail.token
@@ -188,7 +189,7 @@ const ListCategory = () => {
       showLoader(true);
       const res = await Service(
         "PATCH",
-        `http://localhost:5555/quiz-category/submit/${id}`,
+        `${APP_URL}quiz-category/submit/${id}`,
         {},
         {},
         userDetail.token

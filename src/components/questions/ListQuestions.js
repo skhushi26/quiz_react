@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { AppContext } from "../../contexts/appContext";
 import { Card, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { APP_URL } from "../../utils/Constants";
 
 import Service from "../../utils/Service";
 import {
@@ -31,7 +32,7 @@ const ListQuestions = (props) => {
         showLoader(true);
         const res = await Service(
           "PATCH",
-          `http://localhost:5555/question/delete/${_id}`,
+          `${APP_URL}question/delete/${_id}`,
           {},
           {},
           userDetail.token
@@ -119,7 +120,7 @@ const ListQuestions = (props) => {
     };
     const res = await Service(
       "POST",
-      `http://localhost:5555/question/add-new`,
+      `${APP_URL}question/add-new`,
       reqBody,
       {},
       userDetail.token
@@ -142,7 +143,7 @@ const ListQuestions = (props) => {
     showLoader(true);
     const res = await Service(
       "GET",
-      `http://localhost:5555/quiz-category/get-question-by-category/${categoryId}`,
+      `${APP_URL}quiz-category/get-question-by-category/${categoryId}`,
       {},
       {},
       userDetail.token

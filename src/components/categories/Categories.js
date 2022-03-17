@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { AppContext } from "../../contexts/appContext";
 import Service from "../../utils/Service";
+import { APP_URL } from "../../utils/Constants";
 
 const Categories = () => {
   const { userDetail, showLoader } = useContext(AppContext);
@@ -13,7 +14,7 @@ const Categories = () => {
     showLoader(true);
     const res = await Service(
       "GET",
-      "http://localhost:5555/quiz-category/get-submitted",
+      `${APP_URL}quiz-category/get-submitted`,
       {},
       {},
       userDetail.token
