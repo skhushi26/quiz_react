@@ -28,6 +28,7 @@ const ListQuestions = (props) => {
   const handleDeleteQuestion = async (queIdx, _id) => {
     if (_id) {
       if (await showConfirmation("Are you sure you want to delete?")) {
+        showLoader(true);
         const res = await Service(
           "PATCH",
           `http://localhost:5555/question/delete/${_id}`,
@@ -46,6 +47,7 @@ const ListQuestions = (props) => {
         } else {
           showError(message);
         }
+        showLoader(false);
       }
     } else {
       questionsData.questions.splice(queIdx, 1);
@@ -137,6 +139,7 @@ const ListQuestions = (props) => {
   };
 
   const getQuestionsList = async () => {
+    showLoader(true);
     const res = await Service(
       "GET",
       `http://localhost:5555/quiz-category/get-question-by-category/${categoryId}`,
@@ -151,6 +154,7 @@ const ListQuestions = (props) => {
       setIsSubmitted(isSubmittedFlag);
       setQuestionsData(res.data[0]);
     }
+    showLoader(false);
   };
 
   useEffect(() => {

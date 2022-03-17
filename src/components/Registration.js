@@ -9,7 +9,7 @@ import { showSuccess, showInfo, showError } from "../utils/AlertService";
 import { AppContext } from "../contexts/appContext";
 
 function Registration() {
-  const { isAuth, userRole } = useContext(AppContext);
+  const { isAuth, userRole, showLoader } = useContext(AppContext);
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -30,6 +30,7 @@ function Registration() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    showLoader(true);
     const form = event.currentTarget;
     if (form.checkValidity()) {
       const reqBody = {
@@ -55,6 +56,7 @@ function Registration() {
         showError(message);
       }
     }
+    showLoader(false);
     setValidated(true);
   };
 

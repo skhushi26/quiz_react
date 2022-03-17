@@ -8,7 +8,7 @@ import { showSuccess, showInfo, showError } from "../../utils/AlertService";
 import Score from "../Score";
 
 const Questions = () => {
-  const { userDetail } = useContext(AppContext);
+  const { userDetail, showLoader } = useContext(AppContext);
   const { id } = useParams();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quiz, setQuiz] = useState(null);
@@ -65,6 +65,7 @@ const Questions = () => {
   };
 
   const submitQuiz = async () => {
+    showLoader(true);
     const reqBody = {
       user_id: userDetail.userData._id,
       category_id: id,
@@ -88,6 +89,7 @@ const Questions = () => {
     } else {
       showError(message);
     }
+    showLoader(false);
   };
 
   useEffect(() => {

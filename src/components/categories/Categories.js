@@ -18,7 +18,10 @@ const Categories = () => {
       {},
       userDetail.token
     );
-    setCategories(res.data);
+    if (!res.error) {
+      setCategories(res.data);
+    }
+
     showLoader(false);
   };
 

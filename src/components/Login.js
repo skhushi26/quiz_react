@@ -11,7 +11,7 @@ import { showSuccess, showInfo, showError } from "../utils/AlertService";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { dispatch, isAuth, userRole } = useContext(AppContext);
+  const { dispatch, isAuth, userRole, showLoader } = useContext(AppContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +29,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    showLoader(true);
     const form = event.currentTarget;
 
     if (form.checkValidity()) {
@@ -67,6 +68,7 @@ const Login = () => {
     }
 
     setValidated(true);
+    showLoader(false);
   };
 
   return (

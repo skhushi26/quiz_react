@@ -152,12 +152,15 @@ const ListCategory = () => {
       {},
       userDetail.token
     );
-    setCategoryData(res.data);
+    if (!res.error) {
+      setCategoryData(res.data);
+    }
     showLoader(false);
   };
 
   const handleDelete = async (id) => {
     if (await showConfirmation("Are you sure you want to delete?")) {
+      showLoader(true);
       const res = await Service(
         "PATCH",
         `http://localhost:5555/quiz-category/delete/${id}`,
@@ -175,11 +178,14 @@ const ListCategory = () => {
       } else {
         showError(message);
       }
+
+      showLoader(false);
     }
   };
 
   const submitQuizCategory = async (id) => {
     if (await showConfirmation("Are you sure you want to submit category?")) {
+      showLoader(true);
       const res = await Service(
         "PATCH",
         `http://localhost:5555/quiz-category/submit/${id}`,
@@ -197,6 +203,8 @@ const ListCategory = () => {
       } else {
         showError(message);
       }
+
+      showLoader(false);
     }
   };
 

@@ -39,17 +39,19 @@ const Service = (method, url, body = {}, params = {}, token = null) => {
         const newResponseText = JSON.parse(responseText);
         if (status === 401) {
           // will logout
-          showInfo(
-            "Session is expire please do logout and login again!",
-            "warning",
-            "warning"
-          );
-          reject({
+
+          resolve({
             error: true,
             data: newResponseText.data,
             message: newResponseText.message,
             status,
           });
+
+          showInfo(
+            "Session is expire please do logout and login again!",
+            "warning",
+            "warning"
+          );
         } else {
           resolve({
             error: true,
