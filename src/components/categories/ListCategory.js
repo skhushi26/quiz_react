@@ -1,5 +1,5 @@
-import react, { useContext, useEffect, useState } from "react";
-import { Row, Col, Button, Form, Card, Container } from "react-bootstrap";
+import { useContext, useEffect, useState } from "react";
+import { Row, Col, Button, Form, Card } from "react-bootstrap";
 import { AppContext } from "../../contexts/appContext";
 import Service from "../../utils/Service";
 import "../../styles/addCategory.scss";
@@ -15,7 +15,7 @@ import { FaEdit, FaTrash, FaPaperPlane, FaPlusCircle } from "react-icons/fa";
 import { APP_URL } from "../../utils/Constants";
 
 function CategoryCrud(props) {
-  const { userDetail, isAuth, showLoader } = useContext(AppContext);
+  const { userDetail, showLoader } = useContext(AppContext);
   const [validated, setValidated] = useState(false);
   const [categoryName, setCategoryName] = useState(
     props.categoryDetail?.data?.name ? props.categoryDetail?.data?.name : ""

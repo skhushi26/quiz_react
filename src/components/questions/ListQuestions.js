@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AppContext } from "../../contexts/appContext";
-import { Card, Form, Row, Col, Button, Container } from "react-bootstrap";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { Form, Row, Col, Button, Container } from "react-bootstrap";
+import { FaTrash } from "react-icons/fa";
 import { APP_URL } from "../../utils/Constants";
 
 import Service from "../../utils/Service";
@@ -17,7 +17,6 @@ const ListQuestions = (props) => {
   const { userDetail, showLoader } = useContext(AppContext);
   const { categoryId } = useParams();
   const [questionsData, setQuestionsData] = useState(null);
-  const [validated, setValidated] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const que = {
@@ -241,7 +240,7 @@ const ListQuestions = (props) => {
                         disabled={isSubmitted}
                       />
                     </Form.Group>
-                    {ansIdx != 0 && (
+                    {ansIdx !== 0 && (
                       <Col md={2}>
                         {!isSubmitted && (
                           <FaTrash

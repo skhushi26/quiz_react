@@ -1,7 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Registration from "./components/Registration";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import Routing from "./routing/Routing";
 import AppContextProvider from "./contexts/appContext";
 import Logout from "./utils/Logout";

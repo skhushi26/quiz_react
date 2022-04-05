@@ -125,7 +125,7 @@ const Questions = () => {
                           className={`${quizGiven ? "title no-hover" : "title"}
 
                         ${
-                          questions[currentQuestion]?.answer_id == optData._id
+                          questions[currentQuestion]?.answer_id === optData._id
                             ? optData.is_correct
                               ? "right"
                               : "wrong"
@@ -150,7 +150,7 @@ const Questions = () => {
                       <div
                         className={`title ${
                           questions[currentQuestion] &&
-                          optData._id == questions[currentQuestion].answer_id
+                          optData._id === questions[currentQuestion].answer_id
                             ? "option-active"
                             : ""
                         }`}
@@ -176,7 +176,7 @@ const Questions = () => {
         )} */}
           <Button
             className="que-button"
-            disabled={quiz && currentQuestion == 0}
+            disabled={quiz && currentQuestion === 0}
             onClick={handlePrevious}
           >
             Previous

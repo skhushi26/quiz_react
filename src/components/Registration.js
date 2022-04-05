@@ -27,7 +27,7 @@ function Registration() {
         navigate("/categories");
       }
     }
-  }, [isAuth]);
+  }, [isAuth, userRole, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
